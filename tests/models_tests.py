@@ -8,9 +8,10 @@ def equalish(a, b):
 def test_composite_model():
     linear_series = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     periodic_series = [0, 1, 2, 3, 4, 3, 2, 1, 0]
-    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(len(linear_series))]
+    n = len(linear_series)
+    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(n)]
 
-    model = CompositeModel(historic_data, 11)
+    model = CompositeModel(historic_data, n)
 
     equalish(model.predict_at_time(2), 4)
     equalish(model.predict_at_time(4), 8)
@@ -19,9 +20,10 @@ def test_composite_model():
 def test_composite_model_new_predictions():
     linear_series = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     periodic_series = [0, 1, 2, 3, 4, 3, 2, 1, 0]
-    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(len(linear_series))]
+    n = len(linear_series)
+    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(n)]
 
-    model = CompositeModel(historic_data, 11)
+    model = CompositeModel(historic_data, n)
 
     equalish(model.predict_at_time(11), 13)
     equalish(model.predict_at_time(13), 17)
@@ -36,13 +38,13 @@ def test_linear_model():
 
 def test_fourier_model():
     historic_data = [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1]
-    model = FourierModel(historic_data, 11)
+    model = FourierModel(historic_data, len(historic_data))
 
     equalish(model.predict_at_time(4), 5)
     equalish(model.predict_at_time(5), 6)
 
 def test_fourier_model_remembers_period_length():
     historic_data = [1, 2, 3]
-    model = FourierModel(historic_data, 1)
+    model = FourierModel(historic_data, len(historic_data))
 
     assert model.period_length == 3

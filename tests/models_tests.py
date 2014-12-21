@@ -2,14 +2,11 @@ from nose.tools import *
 
 from fourier_requests.models import CompositeModel, LinearModel, FourierModel
 
-def equalish(a, b):
-    assert round(a, 1) == round(b, 1)
+from tests.test_helper import composite_series, equalish
 
 def test_composite_model():
-    linear_series = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    periodic_series = [0, 1, 2, 3, 4, 3, 2, 1, 0]
-    n = len(linear_series)
-    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(n)]
+    historic_data = composite_series()
+    n = len(historic_data)
 
     model = CompositeModel(historic_data, n)
 
@@ -18,10 +15,8 @@ def test_composite_model():
     equalish(model.predict_at_time(6), 8)
 
 def test_composite_model_new_predictions():
-    linear_series = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    periodic_series = [0, 1, 2, 3, 4, 3, 2, 1, 0]
-    n = len(linear_series)
-    historic_data = [linear_series[i] + periodic_series[i] for i in xrange(n)]
+    historic_data = composite_series()
+    n = len(historic_data)
 
     model = CompositeModel(historic_data, n)
 
